@@ -99,8 +99,9 @@ class WickedPdf # rubocop:disable Metrics/ClassLength:
     if WickedPdf.config[:use_puppeteer]
       spec = Gem::Specification.find_by_name('wicked_pdf')
       node_modules_path = "#{Rails.root}/node_modules"
+      node_command_path = WickedPdf.config[:node_path] || 'node'
       command = [
-        'node',
+        node_command_path,
         File.join(spec.gem_dir, 'lib', 'wicked_pdf', 'pdf.js'),
         node_modules_path
       ]
