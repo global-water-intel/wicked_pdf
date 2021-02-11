@@ -7,20 +7,13 @@ class WickedPdf
     class WickedRailtie < Rails::Railtie
       initializer 'wicked_pdf.register', :after => 'remotipart.controller_helper' do |_app|
         ActiveSupport.on_load(:action_controller) do
-          if ActionController::Base.respond_to?(:prepend) &&
-             Object.method(:new).respond_to?(:super_method)
-            ActionController::Base.send :prepend, PdfHelper
-          else
-            ActionController::Base.send :include, PdfHelper
-          end
+          ActionController::Base.send :prepend, PdfHelper
           ActionView::Base.send :include, WickedPdfHelper::Assets
         end
       end
     end
 
-    if Mime::Type.lookup_by_extension(:pdf).nil?
-      Mime::Type.register('application/pdf', :pdf)
-    end
+    Mime::Type.register('application/pdf', :pdf) if Mime::Type.lookup_by_extension(:pdf).nil?
 
   end
 end
